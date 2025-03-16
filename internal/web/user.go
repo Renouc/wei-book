@@ -27,12 +27,20 @@ func NewUserHandler() *UserHandler {
 }
 
 func (u *UserHandler) RegisterUserServer(server *gin.Engine) {
-	userServer := server.Group("/user")
+	userServer := server.Group("/api/user")
 	{
 		userServer.POST("/signUp", u.SignUp)
 		userServer.POST("/login", u.Login)
 		userServer.POST("/profile", u.Profile)
 		userServer.POST("/edit", u.Edit)
+
+		// 这是测试接口忽略
+		userServer.GET("/", func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{
+				"code":    200,
+				"message": "success",
+			})
+		})
 	}
 }
 
@@ -79,6 +87,9 @@ func (u *UserHandler) SignUp(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"message": "success",
+		"data": gin.H{
+			"token": "token",
+		},
 	})
 }
 
